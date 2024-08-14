@@ -1,13 +1,17 @@
 #!/bin/bash
 
-# Set the source and output
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SOURCE_DIR="$SCRIPT_DIR/model"
-OUTPUT_FILE="model.tar.gz"
+# Check if required arguments are provided
+if [ "$#" -lt 2 ]; then
+    echo "Usage: $0 <source_directory> <output_file.tar.gz>"
+    exit 1
+fi
+
+SOURCE_DIR="$1"
+OUTPUT_FILE="$2"
 
 # Check if source directory exists
 if [ ! -d "$SOURCE_DIR" ]; then
-    echo "Error: 'model' directory does not exist in the script's directory."
+    echo "Source directory does not exist: $SOURCE_DIR"
     exit 1
 fi
 
@@ -21,7 +25,7 @@ fi
 
 # Compress the directory
 echo "Compressing $SOURCE_DIR to $OUTPUT_FILE using $COMPRESS_CMD..."
-tar cf - -C "$SCRIPT_DIR" model | $COMPRESS_CMD > "$OUTPUT_FILE"
+tar cf - -C "$SOURCE_DIR" . | $COMPRESS_CMD > "$OUTPUT_FILE"
 
 # Check if compression was successful
 if [ $? -eq 0 ]; then
