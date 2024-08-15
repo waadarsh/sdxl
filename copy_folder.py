@@ -13,8 +13,10 @@ def copy_folder(src, dst):
         print(f"Error: Source directory '{src}' does not exist.")
         return
 
-    if not os.path.exists(dst):
-        os.makedirs(dst)
+    # Create 'base' folder inside 'model'
+    dst_base = os.path.join(dst, os.path.basename(src))
+    if not os.path.exists(dst_base):
+        os.makedirs(dst_base)
 
     total_files = count_files(src)
     
@@ -22,12 +24,14 @@ def copy_folder(src, dst):
         for root, dirs, files in os.walk(src):
             for dir in dirs:
                 src_dir = os.path.join(root, dir)
-                dst_dir = os.path.join(dst, os.path.relpath(src_dir, src))
+                rel_path = os.path.relpath(src_dir, src)
+                dst_dir = os.path.join(dst_base, rel_path)
                 os.makedirs(dst_dir, exist_ok=True)
             
             for file in files:
                 src_file = os.path.join(root, file)
-                dst_file = os.path.join(dst, os.path.relpath(src_file, src))
+                rel_path = os.path.relpath(src_file, src)
+                dst_file = os.path.join(dst_base, rel_path)
                 shutil.copy2(src_file, dst_file)
                 pbar.update(1)
 
@@ -38,4 +42,4 @@ destination_folder = 'model'
 # Call the function to copy the folder
 copy_folder(source_folder, destination_folder)
 
-print(f"Contents of '{source_folder}' have been copied to '{destination_folder}'.")
+print(f"'{source_folder}' folder has been copied into '{destination_folder}'.")
