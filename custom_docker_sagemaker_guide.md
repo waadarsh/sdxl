@@ -119,12 +119,17 @@ This comprehensive guide will walk you through setting up and running a LoRA (Lo
    RUN pip install --no-cache-dir \
        accelerate \
        transformers \
-       diffusers[torch] \
+       diffusers \
+       peft \
        bitsandbytes \
        xformers \
        scipy \
        safetensors \
        boto3 \
+       sagemaker \
+       huggingface \
+       sagemaker-huggingface-inference-toolkit \
+       huggingface-hub \
        sagemaker-training
 
    # Set up code directory
